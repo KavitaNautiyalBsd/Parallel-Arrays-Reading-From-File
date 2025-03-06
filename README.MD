@@ -67,7 +67,7 @@ int main() {
     int size = 0;
 
     // Read scores from the file
-    readScoresFromFile("scores.txt", scores, size);
+    readScoresFromFile("scores.csv", scores, size);
     // Calculate grades based on the scores
     calculateGrades(scores, grades, size);
     // Sort the scores and grades
