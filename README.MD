@@ -1,83 +1,93 @@
-# C++ Program: Letter Grade Calculator with Arrays, Reading from a File
+# C++ Program: Letter Grade Calculator with Arrays of Structures, Reading from a File
 
 ### Objective
 
 Create a C++ program that reads numerical scores from a file, calculates the letter grades, sorts the scores, and computes the median.
+Update the program to use arrays of structures to store the scores and grades, and implement functions to handle reading, calculating, sorting, and printing the data.
 
 ### Instructions
 
-1. Read from file named **scores.txt** containing numerical scores (between 0 and 4), one score per line.
-2. The program will read these scores into a double array.
-3. Calculate the corresponding letter grades and fill a parallel array with these grades.
-    scores array
-    grades array
-4. Sort the numerical scores array and the letter grades array based on the scores.
-5. Calculate and output the median of the scores.
-6. Print both the sorted arrays and the median.
-7. Functions to Implement
-8. void readScores(double scores[], int &size)
-9. void calculateGrades(const double scores[], char grades[], int size)
-10. void sortScores(double scores[], char grades[], int size)
-11. double calculateMedian(const double scores[], int size)
-12. void printArrays(const double scores[], const char grades[], int size)
+#### Define the Structure:
 
-### Functions to Implement
+* Create a structure named ScoreData that contains the following fields:
+  * double score: To hold the actual score received.
+  * char grade: To store the letter grade corresponding to the score.
+  
+##### Function Prototypes:
 
-void readScores(double scores[], int &size)
-void calculateGrades(const double scores[], char grades[], int size)
-void sortScores(double scores[], char grades[], int size)
-double calculateMedian(const double scores[], int size)
-void printArrays(const double scores[], const char grades[], int size)
+  **Declare the following function prototypes:**
 
-### Explanation of the Code
-**readScoresFromFile**: This function has been created to handle the reading of scores from the specified file. 
-It takes the filename, the scores array, and a reference to the size variable as parameters. This enhances modularity and clarity in the code.
+*   void loadScores(ScoreData scores[], int &size): This function reads scores from scores.txt into the scores array and updates the count of scores read.
+*   void calculateGrades(ScoreData scores[], int size): This function calculates the letter grades based on the scores.
+*   void sortScores(ScoreData scores[], int size): This function sorts the scores and their corresponding grades.
+*   double calculateMedian(const ScoreData scores[], int size): This function calculates the median score.
+*   void printScores(const ScoreData scores[], int size, double median): This function prints the sorted scores and letter grades along with the median.
 
-**readScores**: This function reads scores from a file, validates them, and stores them in an array. It also updates the size of the array.
+#### Main Function:
 
-**calculateGrades**: This function calculates the letter grade based on the score and fills a parallel array with the grades.
+  **In the main() function:**
 
-**sortScores**: This function sorts both the scores and their corresponding grades using a simple bubble sort algorithm.
-
-**calculateMedian**: This function calculates the median of the scores, handling both even and odd sizes of the array.
-
-**printArrays**: This function prints the sorted scores and their corresponding letter grades.
-
+*   Define an array of ScoreData with a maximum size (e.g., 50).
+*   Define an integer variable to keep track of the number of scores read.
+*   Call the loadScores() function to populate the array.
+*   Call calculateGrades() to fill in the letter grades for each score.
+*   Call sortScores() to sort the array.
+*   Call calculateMedian() to compute the median.
+*   Call printScores() to display the sorted scores, grades, and median.
+*   Implement loadScores() Function:
+*   Open the scores.txt file for reading.
+*   Read each line of the file and store valid scores (between 0 and 4) in the ScoreData array.
+*   Update the count of scores read.
+*   Implement calculateGrades() Function:
+*   Loop through the scores array and assign letter grades based on the following criteria:
+1. A: 3.5 - 4.0
+2.   B: 2.5 - 3.49
+3.   C: 1.5 - 2.49
+4.   D: 0.5 - 1.49
+5.   F: 0.0 - 0.49**
+  
+* **Implement sortScores() Function:**
+  * Sort the scores array using a sorting algorithm (e.g., bubble sort or selection sort), ensuring that the corresponding grades are also rearranged accordingly.
+ * **Implement calculateMedian() Function:**
+   * Calculate the median of the scores. If the number of scores is even, return the average of the two middle scores.
+ * **Implement printScores() Function:**
+    Print the sorted scores and their corresponding letter grades in a formatted manner, along with the median score.
 
 ### Code Starter Stub
 ```
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <algorithm>
 
 using namespace std;
 
+// Define the structure
+struct ScoreData {
+    double score;
+    char grade;
+};
+
 // Function prototypes
-void readScoresFromFile(const string &filename, double scores[], int &size);
-void calculateGrades(const double scores[], char grades[], int size);
-void sortScores(double scores[], char grades[], int size);
-double calculateMedian(const double scores[], int size);
-void printArrays(const double scores[], const char grades[], int size);
+void loadScores(ScoreData scores[], int &size);
+void calculateGrades(ScoreData scores[], int size);
+void sortScores(ScoreData scores[], int size);
+double calculateMedian(const ScoreData scores[], int size);
+void printScores(const ScoreData scores[], int size, double median);
 
 int main() {
-    const int MAX_SIZE = 100;
-    double scores[MAX_SIZE];
-    char grades[MAX_SIZE];
-    int size = 0;
+    ScoreData scores[50]; // Array to hold up to 50 scores
+    int size = 0;         // Variable to track number of scores read
 
-    // Read scores from the file
-    readScoresFromFile("scores.csv", scores, size);
+    // Load scores from the file
+    loadScores(scores, size);
     // Calculate grades based on the scores
-    calculateGrades(scores, grades, size);
+    calculateGrades(scores, size);
     // Sort the scores and grades
-    sortScores(scores, grades, size);
+    sortScores(scores, size);
     // Calculate the median of the scores
     double median = calculateMedian(scores, size);
-    // Print the sorted arrays and the median
-    printArrays(scores, grades, size);
-    
-    cout << "Median score: " << median << endl;
+    // Print the sorted scores and grades along with the median
+    printScores(scores, size, median);
 
     return 0;
 }
